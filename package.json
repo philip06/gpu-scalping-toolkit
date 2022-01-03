@@ -1,0 +1,18 @@
+{
+    "name": "gcard_scrapers",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node index.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "js-logger": "^1.6.1",
+        "jsdom": "^19.0.0",
+        "proxy-chain": "^1.0.0",
+        "puppeteer": "^8.0.0"
+    }
+}
