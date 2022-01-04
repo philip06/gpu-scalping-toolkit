@@ -1,4 +1,3 @@
-import os
 import zipfile
 
 from selenium.webdriver.chrome.options import Options
