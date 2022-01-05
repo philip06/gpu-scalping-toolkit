@@ -1,17 +1,44 @@
 import logging
 import json
 import base64
+import datetime
 import time
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-def getQueueTime(driver, sku) -> int:
+
+class QueueDTO:
+    def __init__(self, queue_length, queue_start_time, queue_end_time):
+        self.queue_length = queue_length
+        self.queue_start_time = queue_start_time
+        self.queue_end_time = queue_end_time
+
+    def __str__(self):
+        return f'''
+            {{
+                "queue_length": {self.queue_length},
+                "queue_start_time": {self.queue_start_time},
+                "queue_end_time": {self.queue_end_time}
+            }}
+        '''
+
+
+def getQueueTime(driver, sku) -> QueueDTO:
     purchase_tracker = driver.execute_script(
         "return localStorage.getItem(\"purchaseTracker\");")
 
     a2c_transaction_code = json.loads(
         base64.b64decode(purchase_tracker))[sku][2]
 
-    return _getQueueTime(a2c_transaction_code)
+    queue_length = _getQueueTime(a2c_transaction_code)
+    queue_start_time = datetime.datetime.now()
+    queue_end_time = queue_start_time + \
+        datetime.timedelta(seconds=queue_length)
+
+    # logger.info(
+    #     f"BESTBUY - Found queue time: {queue_end_time} - {getRemainingTime(queue_end_time)}")
+    return QueueDTO(queue_length, queue_start_time, queue_end_time)
 
 
 def _getQueueTime(a2ctransactioncode) -> int:
@@ -22,46 +49,51 @@ def _getQueueTime(a2ctransactioncode) -> int:
     v2 = saveContextMenuId[1]
     v3 = v1 / v2
 
-    return int(1e3 * v3)
+    return int(1e3 * v3 / 1000)
 
 
-def reduceQueueTime(driver, sku):
+def getRemainingTime(queue_end_time) -> datetime:
+    return queue_end_time - datetime.datetime.now()
+
+
+# returns queue completion datetime
+def reduceQueueTime(driver, sku, old_queue_end_time) -> datetime:
     backup_cookies = driver.get_cookies()
     backup_purchaseTracker = driver.execute_script(
         "return localStorage.getItem('purchaseTracker')")
-    old_queue_time = getQueueTime(driver, sku)
     clearSoftBan(driver)
+    new_queue_end_time = old_queue_end_time
 
     # keep retrying until it finds purchaseTracker. minimizing time in between rerolls
     while True:
         try:
-            new_queue_time = getQueueTime(driver, sku)
-            logging.info(
+            new_queue_dto = getQueueTime(driver, sku)
+            new_queue_end_time = new_queue_dto.queue_end_time
+            logger.info(
                 f"BESTBUY - Successfully pulled purchaseTracker")
             break
         except:
-            logging.info(
-                f"BESTBUY - Failed to pull purchaseTracker. Retrying...")
+            # logger.info(
+            #     f"BESTBUY - Failed to pull purchaseTracker. Retrying...")
             time.sleep(0.1)
 
-    if old_queue_time < new_queue_time:
+    if old_queue_end_time < new_queue_end_time:
         # new queue time sucks, restore old session
         for cookie in backup_cookies:
             driver.add_cookie(cookie)
         driver.execute_script(
             "localStorage.setItem('purchaseTracker', arguments[0])", backup_purchaseTracker)
-
-        logging.info(
-            f"BESTBUY - Current queue time: {int(old_queue_time / 1000)} seconds. Found slower queue time at: {int(new_queue_time / 1000)}")
-        return old_queue_time
+        logger.info(
+            f"BESTBUY - Current queue time: {getRemainingTime(old_queue_end_time)} seconds. Found slower queue time at: {getRemainingTime(new_queue_end_time)}")
+        return old_queue_end_time
     else:
-        logging.info(
-            f"BESTBUY - Current queue time: {int(new_queue_time / 1000)} seconds. Reduced time from {int(old_queue_time / 1000)} to {int(new_queue_time / 1000)}")
-        return new_queue_time
+        logger.info(
+            f"BESTBUY - Current queue time: {getRemainingTime(new_queue_end_time)} seconds. Reduced time from {getRemainingTime(old_queue_end_time)} to {getRemainingTime(new_queue_end_time)}")
+        return new_queue_end_time
 
 
 def clearSoftBan(driver):
-    logging.info("BESTBUY - Clearing soft bans for session")
+    logger.info("BESTBUY - Clearing soft bans for session")
     driver.delete_all_cookies()
     driver.execute_script('localStorage.clear();')
 

@@ -4,6 +4,7 @@ import bestbuy_queue_cracker
 from helium import *
 import chromedriver_autoinstaller
 import pyotp
+import datetime
 import time
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
@@ -16,9 +17,10 @@ import logging
 # then add chromedriver to path
 chromedriver_autoinstaller.install()
 logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-ACCEPTABLE_QUEUE_TIME = 60000
-BESTBUY_2FA_TOKEN = "QW2LN7JNEHEVV65Y"
+ACCEPTABLE_QUEUE_TIME = 30
+BESTBUY_2FA_TOKEN = "4YQJH2QGRIDMXRPD"
 BESTBUY_USER = "pcrilley06@gmail.com"
 BESTBUY_PASSWORD = "4w31d2EJGMCq"
 sku = "6454318"
@@ -30,22 +32,26 @@ chrome_options = proxy_loader.get_chromedriver(use_proxy=True)
 
 sku_page = f'https://www.bestbuy.com/site/{sku}.p?skuId={sku}'
 
-logging.info(
+logger.info(
     f"BESTBUY - Starting browser with proxy: {proxy_loader.PROXY_HOST}:{proxy_loader.PROXY_PORT}")
 driver = start_chrome(sku_page, options=chrome_options)
 
-logging.info("BESTBUY - Waiting for add to cart button")
+logger.info("BESTBUY - Waiting for add to cart button")
 WebDriverWait(driver, 20).until(EC.element_to_be_clickable(
     (By.CSS_SELECTOR, 'button[data-button-state="ADD_TO_CART"]'))).click()
+
+add_to_cart = driver.find_element_by_css_selector(
+    "button[data-button-state=\"ADD_TO_CART\"]")
+
+driver.execute_script("arguments[0].click();", add_to_cart)
 time.sleep(1)
-queue_time = 100000
+queue_end_time = bestbuy_queue_cracker.getQueueTime(driver, sku).queue_end_time
 
-while queue_time > ACCEPTABLE_QUEUE_TIME:
-    queue_time = bestbuy_queue_cracker.reduceQueueTime(driver, sku)
+while queue_end_time > datetime.datetime.now():
+    queue_end_time = bestbuy_queue_cracker.reduceQueueTime(
+        driver, sku, queue_end_time)
 
-
-# at this point queue is really and fast, wait for it to almost be finished
-time.sleep(int(queue_time / 1000))
+logger.info(f"BESTBUY - Queue finished")
 
 add_to_cart = driver.find_element_by_css_selector(
     "button[data-button-state=\"ADD_TO_CART\"]")

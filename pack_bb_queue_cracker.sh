@@ -1,1 +1,0 @@
-google-chrome --pack-extension=~/bestbuy-queue-cracker
