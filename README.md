@@ -1,5 +1,7 @@
 # GPU Scanner
 
+[Bestbuy Strategy Guide](https://docs.google.com/document/d/1EC3Li65gerZRG4gBiIs4rot-Bc4SceqWn413XGsOA4g/edit?usp=sharing)
+
 A product page scanner designed to send out GPU stock drop notifications to one or both of the following endpoints:
  - a discord channel webhook: [GMU Channel Webhook](https://discordapp.com/api/webhooks/926904611082739733/H1ofplv4PUp_JVXhnao134nFiVBkK9wsWccvySIaF_BRsvJb2TU8a8RMcm4D9UHCjwhz)
  - an endpoint which executes a checkout bot

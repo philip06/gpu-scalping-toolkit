@@ -1,1 +1,0 @@
-# evga-checkout-puppeteer-bot
