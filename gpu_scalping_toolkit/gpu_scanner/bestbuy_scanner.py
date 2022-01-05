@@ -8,9 +8,7 @@ import logging
 
 from requests.exceptions import ProxyError, Timeout
 
-import discord_bot
-import helpers
-import start_checkout
+from gpu_scalping_toolkit.gpu_scanner import discord_bot, helpers, start_checkout
 
 # time to wait after scanning to before sending another notification (minutes)
 RESCAN_TIMEOUT = 30

@@ -1,5 +1,4 @@
-import proxy_loader
-import bestbuy_queue_cracker
+from gpu_scalping_toolkit.gpu_checkout_bot import bestbuy_queue_cracker, proxy_loader
 
 from helium import *
 import chromedriver_autoinstaller
@@ -7,7 +6,6 @@ import pyotp
 import datetime
 import time
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 import logging
@@ -70,15 +68,15 @@ def addProductToCart(sku, account_info):
     click("Continue")
 
 
-BESTBUY_2FA_TOKEN = "4YQJH2QGRIDMXRPD"
-BESTBUY_USER = "pcrilley06@gmail.com"
-BESTBUY_PASSWORD = "4w31d2EJGMCq"
-sku = "6454318"
+# BESTBUY_2FA_TOKEN = "4YQJH2QGRIDMXRPD"
+# BESTBUY_USER = "pcrilley06@gmail.com"
+# BESTBUY_PASSWORD = "4w31d2EJGMCq"
+# sku = "6454318"
 
-account_info = {
-    "user": BESTBUY_USER,
-    "password": BESTBUY_PASSWORD,
-    "2fa_token": BESTBUY_2FA_TOKEN
-}
+# account_info = {
+#     "user": BESTBUY_USER,
+#     "password": BESTBUY_PASSWORD,
+#     "2fa_token": BESTBUY_2FA_TOKEN
+# }
 
 # addProductToCart(sku, account_info)
