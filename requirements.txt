@@ -2,3 +2,5 @@ helium
 chromedriver-autoinstaller
 requests
 pyotp
+discord
+beautifulsoup4
