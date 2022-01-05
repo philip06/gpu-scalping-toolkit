@@ -1,4 +1,4 @@
-from gpu_scalping_toolkit.gpu_checkout_bot import bestbuy_queue_cracker, proxy_loader
+from gpu_scalping_toolkit.gpu_checkout_bot import bestbuy_queue_cracker, proxy_loader, read_gmail
 
 from helium import *
 import chromedriver_autoinstaller
@@ -55,7 +55,7 @@ def addProductToCart(sku, account_info):
     WebDriverWait(driver, 20).until(EC.element_to_be_clickable(
         (By.CSS_SELECTOR, "button[data-track=\"Sign In\"]")))
 
-    write(account_info["user"], into="Email")
+    write(account_info["email"], into="Email")
     write(account_info["password"], into="Password")
     click("Sign In")
 
@@ -67,15 +67,26 @@ def addProductToCart(sku, account_info):
     inputElement.send_keys(bestbuy_2fa_code.now())
     click("Continue")
 
+    verification_code = read_gmail.get_verification_code(
+        account_info["email"], account_info["gmail_password"], 10)
+    logger.info(f"BESTBUY - Got email verification code: {verification_code}")
 
-# BESTBUY_2FA_TOKEN = "4YQJH2QGRIDMXRPD"
-# BESTBUY_USER = "pcrilley06@gmail.com"
-# BESTBUY_PASSWORD = "4w31d2EJGMCq"
+    # only need to do this if the email authentication comes up
+    if verification_code:
+        write(verification_code, into="Verification Code")
+        click("Continue")
+
+
 # sku = "6454318"
 
+# BESTBUY_2FA_TOKEN = "4YQJH2QGRIDMXRPD"
+# BESTBUY_EMAIL = "bbverify88@gmail.com"
+# GMAIL_PASSWORD = "w9P4mfz7UY6N2S"
+# BESTBUY_PASSWORD = "w9P4mfz7UY6N2S"
 # account_info = {
-#     "user": BESTBUY_USER,
+#     "email": BESTBUY_EMAIL,
 #     "password": BESTBUY_PASSWORD,
+#     "gmail_password": GMAIL_PASSWORD,
 #     "2fa_token": BESTBUY_2FA_TOKEN
 # }
 

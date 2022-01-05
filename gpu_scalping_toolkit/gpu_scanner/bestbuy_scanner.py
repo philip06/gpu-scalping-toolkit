@@ -13,6 +13,7 @@ from gpu_scalping_toolkit.gpu_scanner import discord_bot, helpers, start_checkou
 # time to wait after scanning to before sending another notification (minutes)
 RESCAN_TIMEOUT = 30
 logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 def scanProduct(sku, proxy_hash_list):
@@ -21,7 +22,7 @@ def scanProduct(sku, proxy_hash_list):
 
     random_proxy = helpers.getRandomValidProxy(proxy_hash_list)
 
-    logging.info(
+    logger.info(
         "Bestbuy: {} - Proxy: {}:{} | Scanning for product".format(sku, random_proxy["host"], random_proxy["port"]))
 
     headers = {
@@ -36,7 +37,7 @@ def scanProduct(sku, proxy_hash_list):
                                 timeout=5)
 
         if response.status_code == 403:
-            logging.warning(
+            logger.warning(
                 "Bestbuy: {} - 403 Proxy burned: {}:{}".format(sku, random_proxy["host"], random_proxy["port"]))
             random_proxy["valid"] = False
             return False
@@ -47,20 +48,20 @@ def scanProduct(sku, proxy_hash_list):
             with open('high_demand_product.html', 'r') as f:
                 html_string = f.read()
 
-        logging.debug(html_string)
+        logger.debug(html_string)
         product_available = _scanProduct(
             sku, html_string, "{}:{}".format(random_proxy["host"], random_proxy["port"]))
         # if we find this product, sleep for RESCAN_TIMEOUT mins before notifying again
         if product_available:
-            logging.info("Bestbuy: {} - Proxy: {}:{} | Sleeping for {} minutes".format(sku,
-                                                                                       random_proxy["host"], random_proxy["port"], RESCAN_TIMEOUT))
+            logger.info("Bestbuy: {} - Proxy: {}:{} | Sleeping for {} minutes".format(sku,
+                                                                                      random_proxy["host"], random_proxy["port"], RESCAN_TIMEOUT))
             time.sleep(60 * RESCAN_TIMEOUT)
 
         return product_available
     except (ProxyError, Timeout) as e:
-        logging.warning(
+        logger.warning(
             "Bestbuy: {} - Proxy timed out: {}:{}".format(sku, random_proxy["host"], random_proxy["port"]))
-        logging.debug(e)
+        logger.debug(e)
         random_proxy["valid"] = False
         return False
 
@@ -80,7 +81,7 @@ def _scanProduct(sku, html_string, proxy_url):
 def _scanProductForHighDemand(sku, title, soup, proxy_host):
     result_list = soup(text=re.compile(r'High Demand Product'))
     if len(result_list) > 0:
-        logging.info(
+        logger.info(
             "Bestbuy: {} - Proxy: {} | Restock imminent".format(sku, proxy_host))
         title = _scanProductForTitle(soup)
         discord_bot.alertBestbuyDrop(
@@ -96,14 +97,14 @@ def _scanProductForAvailable(sku, title, soup, proxy_host):
         soup.select(add_to_cart_selector)) > 0 else False
 
     if is_in_stock:
-        logging.info(
+        logger.info(
             "Bestbuy: {} - Proxy: {} | Sending alert to discord".format(sku, proxy_host))
         discord_bot.alertBestbuyDrop(
             sku, "The following product is now available:", title)
         # execute scanner
         start_checkout.startCheckout(sku)
     else:
-        logging.info(
+        logger.info(
             "Bestbuy: {} - Proxy: {} |  Product not available".format(sku, proxy_host))
 
     return is_in_stock
@@ -112,7 +113,7 @@ def _scanProductForAvailable(sku, title, soup, proxy_host):
 def _scanForInternationalPrompt(sku, soup, proxy_host):
     result_list = soup(text=re.compile(r'Choose a country'))
     if len(result_list) > 0:
-        logging.warning(
+        logger.warning(
             "Bestbuy: {} - Proxy: {} | Choose a country prompt found".format(sku, proxy_host))
         return True
 
