@@ -7,6 +7,7 @@ import re
 import time
 
 EBAY_RESCAN_TIMEOUT = 30
+logging.basicConfig(level=logging.INFO)
 ebay_scan_logger = logging.getLogger(__name__)
 
 
@@ -31,6 +32,8 @@ def scanProduct(proxy_hash_list):
                                 timeout=5)
 
         if response.status_code == 403:
+            ebay_scan_logger.warning(
+                "Ebay: {} - 403 Proxy burned: {}:{}".format(random_proxy["host"], random_proxy["port"]))
             random_proxy["valid"] = False
             return False
 
