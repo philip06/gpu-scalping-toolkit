@@ -56,11 +56,24 @@ def getRemainingTime(queue_end_time) -> datetime:
     return queue_end_time - datetime.datetime.now()
 
 
-# returns queue completion datetime
-def reduceQueueTime(driver, sku, old_queue_end_time) -> datetime:
+def saveQueueTime(driver):
     backup_cookies = driver.get_cookies()
     backup_purchaseTracker = driver.execute_script(
         "return localStorage.getItem('purchaseTracker')")
+    return backup_cookies, backup_purchaseTracker
+
+
+def restoreQueueTime(driver, backup_cookies, backup_purchaseTracker):
+    for cookie in backup_cookies:
+        driver.add_cookie(cookie)
+        driver.execute_script(
+            "localStorage.setItem('purchaseTracker', arguments[0])", backup_purchaseTracker)
+
+# returns queue completion datetime
+
+
+def reduceQueueTime(driver, sku, old_queue_end_time) -> datetime:
+    backup_cookies, backup_purchaseTracker = saveQueueTime(driver)
     clearSoftBan(driver)
     new_queue_end_time = old_queue_end_time
 
@@ -79,10 +92,7 @@ def reduceQueueTime(driver, sku, old_queue_end_time) -> datetime:
 
     if old_queue_end_time < new_queue_end_time:
         # new queue time sucks, restore old session
-        for cookie in backup_cookies:
-            driver.add_cookie(cookie)
-        driver.execute_script(
-            "localStorage.setItem('purchaseTracker', arguments[0])", backup_purchaseTracker)
+        restoreQueueTime(driver, backup_cookies, backup_purchaseTracker)
         logger.info(
             f"BESTBUY - Current queue time: {getRemainingTime(old_queue_end_time)} seconds. Found slower queue time at: {getRemainingTime(new_queue_end_time)}")
         return old_queue_end_time

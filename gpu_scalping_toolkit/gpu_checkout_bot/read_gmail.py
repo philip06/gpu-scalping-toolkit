@@ -48,7 +48,7 @@ def read_verification_code(username, password, sender_of_interest=None):
     return None
 
 
-def get_verification_code(username, password, retry_count, sender_of_interest=None):
+def get_bestbuy_verification_code(username, password, retry_count, sender_of_interest=None):
     while retry_count > 0:
         verification_code = read_verification_code(
             username, password, sender_of_interest)
@@ -59,6 +59,17 @@ def get_verification_code(username, password, retry_count, sender_of_interest=No
         time.sleep(1)
     return None
 
+
+def get_evga_verification_code(username, password, retry_count, sender_of_interest=None):
+    while retry_count > 0:
+        verification_code = read_verification_code(
+            username, password, sender_of_interest)
+        logger.info(f"EVGA - Got verification code: {verification_code}")
+        if verification_code:
+            return verification_code
+        retry_count -= 1
+        time.sleep(1)
+    return None
 
 # BESTBUY_EMAIL = "bbverify88@gmail.com"
 # GMAIL_PASSWORD = "w9P4mfz7UY6N2S"

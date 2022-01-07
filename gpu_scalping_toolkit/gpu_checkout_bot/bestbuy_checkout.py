@@ -67,7 +67,7 @@ def addProductToCart(sku, account_info):
     inputElement.send_keys(bestbuy_2fa_code.now())
     click("Continue")
 
-    verification_code = read_gmail.get_verification_code(
+    verification_code = read_gmail.get_bestbuy_verification_code(
         account_info["email"], account_info["gmail_password"], 10)
     logger.info(f"BESTBUY - Got email verification code: {verification_code}")
 
@@ -77,17 +77,19 @@ def addProductToCart(sku, account_info):
         click("Continue")
 
 
-# sku = "6454318"
+if __name__ == '__main__':
+    import sys
+    sku = sys.argv[1]
 
-# BESTBUY_2FA_TOKEN = "4YQJH2QGRIDMXRPD"
-# BESTBUY_EMAIL = "bbverify88@gmail.com"
-# GMAIL_PASSWORD = "w9P4mfz7UY6N2S"
-# BESTBUY_PASSWORD = "w9P4mfz7UY6N2S"
-# account_info = {
-#     "email": BESTBUY_EMAIL,
-#     "password": BESTBUY_PASSWORD,
-#     "gmail_password": GMAIL_PASSWORD,
-#     "2fa_token": BESTBUY_2FA_TOKEN
-# }
+    BESTBUY_2FA_TOKEN = "4YQJH2QGRIDMXRPD"
+    BESTBUY_EMAIL = "bbverify88@gmail.com"
+    GMAIL_PASSWORD = "w9P4mfz7UY6N2S"
+    BESTBUY_PASSWORD = "w9P4mfz7UY6N2S"
+    account_info = {
+        "email": BESTBUY_EMAIL,
+        "password": BESTBUY_PASSWORD,
+        "gmail_password": GMAIL_PASSWORD,
+        "2fa_token": BESTBUY_2FA_TOKEN
+    }
 
-# addProductToCart(sku, account_info)
+    addProductToCart(sku, account_info)
