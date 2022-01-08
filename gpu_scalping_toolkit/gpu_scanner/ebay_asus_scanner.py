@@ -79,6 +79,10 @@ def _scanProduct(html_string, proxy_host):
                 "The following ASUS refurbished product is now available", product.text)
             product_found = True
 
+    if not product_found:
+        ebay_scan_logger.info(
+            f"Ebay - Proxy: {proxy_host} |  Product not available")
+
     return product_found
 
 

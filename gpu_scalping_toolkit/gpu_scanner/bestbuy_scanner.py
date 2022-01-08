@@ -31,7 +31,7 @@ def scanProduct(sku, proxy_hash_list, product_status: PRODUCT_STATUS) -> PRODUCT
     random_proxy = helpers.getRandomValidProxy(proxy_hash_list)
 
     bestbuy_scan_logger.info(
-        "Bestbuy: {} - Proxy: {}:{} | Scanning for product".format(sku, random_proxy["host"], random_proxy["port"]))
+        f"Bestbuy: {sku} - Proxy: {random_proxy['host']}:{random_proxy['port']} | Scanning for product")
 
     headers = {
         "User-Agent": helpers.getUserAgent(),
