@@ -81,10 +81,10 @@ if __name__ == '__main__':
     import sys
     sku = sys.argv[1]
 
-    BESTBUY_2FA_TOKEN = "4YQJH2QGRIDMXRPD"
-    BESTBUY_EMAIL = "bbverify88@gmail.com"
-    GMAIL_PASSWORD = "w9P4mfz7UY6N2S"
-    BESTBUY_PASSWORD = "w9P4mfz7UY6N2S"
+    BESTBUY_2FA_TOKEN = sys.argv[2]
+    BESTBUY_EMAIL = sys.argv[3]
+    GMAIL_PASSWORD = sys.argv[4]
+    BESTBUY_PASSWORD = sys.argv[5]
     account_info = {
         "email": BESTBUY_EMAIL,
         "password": BESTBUY_PASSWORD,
