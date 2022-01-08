@@ -30,9 +30,14 @@ Send bestbuy drop notification for a sku:
 ##### Bestbuy Scanning
 
 Scan bestbuy product page for "High Demand Product" warning or "Add to Cart" button: 
- - `python3 bestbuy_scanner.py SKU`
+ - `python3 gpu_scalping_toolkit.gpu_scanner.bestbuy_scanner SKU`
 
 ##### EVGA Scanning
 
 Scan EVGA b stock page for specified product number to appear: 
- - `python3 evga_scanner.py PN`
+ - `python3 -m gpu_scalping_toolkit.gpu_scanner.evga_scanner PN`
+
+##### Bestbuy Checkout
+
+Scan bestbuy product page for "High Demand Product" warning or "Add to Cart" button: 
+ - `python3 -m gpu_scalping_toolkit.gpu_checkout_bot.bestbuy_checkout SKU`
