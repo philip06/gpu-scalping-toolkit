@@ -18,15 +18,16 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-def addProductToCart(sku, account_info):
+def addProductToCart(sku, account_info, proxy_info):
     bestbuy_2fa_code = pyotp.TOTP(account_info["2fa_token"])
 
-    chrome_options = proxy_loader.get_chromedriver(use_proxy=True)
+    chrome_options = proxy_loader.get_chromedriver(
+        use_proxy=True, proxy_info=proxy_info)
 
     sku_page = f'https://www.bestbuy.com/site/{sku}.p?skuId={sku}'
 
     logger.info(
-        f"BESTBUY - Starting browser with proxy: {proxy_loader.PROXY_HOST}:{proxy_loader.PROXY_PORT}")
+        f"BESTBUY - Starting browser with proxy: {proxy_info['host']}:{proxy_info['port']}")
     driver = start_chrome(sku_page, options=chrome_options)
 
     logger.info("BESTBUY - Waiting for add to cart button")
@@ -81,10 +82,11 @@ if __name__ == '__main__':
     import sys
     sku = sys.argv[1]
 
-    BESTBUY_2FA_TOKEN = sys.argv[2]
-    BESTBUY_EMAIL = sys.argv[3]
-    GMAIL_PASSWORD = sys.argv[4]
-    BESTBUY_PASSWORD = sys.argv[5]
+    BESTBUY_2FA_TOKEN = "4YQJH2QGRIDMXRPD"
+    BESTBUY_EMAIL = "bbverify88@gmail.com"
+    GMAIL_PASSWORD = "w9P4mfz7UY6N2S"
+    BESTBUY_PASSWORD = "w9P4mfz7UY6N2S"
+
     account_info = {
         "email": BESTBUY_EMAIL,
         "password": BESTBUY_PASSWORD,
@@ -92,4 +94,16 @@ if __name__ == '__main__':
         "2fa_token": BESTBUY_2FA_TOKEN
     }
 
-    addProductToCart(sku, account_info)
+    PROXY_USER = "coiaacye"
+    PROXY_PASS = "kkul1ixr4jnp"
+    PROXY_HOST = "23.230.25.103"
+    PROXY_PORT = 20000
+
+    proxy_info = {
+        "user": PROXY_USER,
+        "password": PROXY_PASS,
+        "host": PROXY_HOST,
+        "port": PROXY_PORT
+    }
+
+    addProductToCart(sku, account_info, proxy_info)

@@ -1,13 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
 from pprint import pprint
-import time
-import sys
 import logging
 
 from requests.exceptions import ProxyError, Timeout
 
-import discord_bot
 import helpers
 
 import urllib3

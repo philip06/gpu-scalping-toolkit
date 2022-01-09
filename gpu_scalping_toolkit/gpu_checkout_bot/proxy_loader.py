@@ -3,11 +3,6 @@ import zipfile
 from selenium.webdriver.chrome.options import Options
 
 
-PROXY_USER = "coiaacye"
-PROXY_PASS = "kkul1ixr4jnp"
-PROXY_HOST = "142.111.248.163"
-PROXY_PORT = 20000
-
 manifest_json = """
 {
     "version": "1.0.0",
@@ -29,42 +24,41 @@ manifest_json = """
 }
 """
 
-background_js = """
-var config = {
-        mode: "fixed_servers",
-        rules: {
-          singleProxy: {
-            scheme: "http",
-            host: "%s",
-            port: parseInt(%s)
-          },
-          bypassList: ["localhost"]
-        }
-      };
 
-chrome.proxy.settings.set({value: config, scope: "regular"}, function() {});
-
-function callbackFn(details) {
-    return {
-        authCredentials: {
-            username: "%s",
-            password: "%s"
-        }
-    };
-}
-
-chrome.webRequest.onAuthRequired.addListener(
-            callbackFn,
-            {urls: ["<all_urls>"]},
-            ['blocking']
-);
-""" % (PROXY_HOST, PROXY_PORT, PROXY_USER, PROXY_PASS)
-
-
-def get_chromedriver(use_proxy=False, user_agent=None):
+def get_chromedriver(use_proxy=False, user_agent=None, proxy_info={}):
     chrome_options = Options()
     if use_proxy:
         pluginfile = 'proxy_auth_plugin.zip'
+        background_js = f"""
+var config = {{
+        mode: "fixed_servers",
+        rules: {{
+          singleProxy: {{
+            scheme: "http",
+            host: "{proxy_info['host']}",
+            port: parseInt({proxy_info['port']})
+          }},
+          bypassList: ["localhost"]
+        }}
+      }};
+
+chrome.proxy.settings.set({{value: config, scope: "regular"}}, function() {{}});
+
+function callbackFn(details) {{
+    return {{
+        authCredentials: {{
+            username: "{proxy_info['user']}",
+            password: "{proxy_info['password']}"
+        }}
+    }};
+}}
+
+chrome.webRequest.onAuthRequired.addListener(
+            callbackFn,
+            {{urls: ["<all_urls>"]}},
+            ['blocking']
+);
+"""
 
         with zipfile.ZipFile(pluginfile, 'w') as zp:
             zp.writestr("manifest.json", manifest_json)
