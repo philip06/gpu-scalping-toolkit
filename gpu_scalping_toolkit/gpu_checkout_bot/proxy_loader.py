@@ -25,30 +25,30 @@ manifest_json = """
 """
 
 
-def get_chromedriver(use_proxy=False, user_agent=None, proxy_info={}):
+def get_chromedriver(use_proxy=False, user_agent=None, account_info={}):
     chrome_options = Options()
     if use_proxy:
         pluginfile = 'proxy_auth_plugin.zip'
         background_js = f"""
 var config = {{
-        mode: "fixed_servers",
-        rules: {{
-          singleProxy: {{
-            scheme: "http",
-            host: "{proxy_info['host']}",
-            port: parseInt({proxy_info['port']})
-          }},
-          bypassList: ["localhost"]
-        }}
-      }};
+    mode: "fixed_servers",
+    rules: {{
+        singleProxy: {{
+        scheme: "http",
+        host: "{account_info['proxy_host']}",
+        port: parseInt({account_info['proxy_port']})
+        }},
+        bypassList: ["localhost"]
+    }}
+}};
 
 chrome.proxy.settings.set({{value: config, scope: "regular"}}, function() {{}});
 
 function callbackFn(details) {{
     return {{
         authCredentials: {{
-            username: "{proxy_info['user']}",
-            password: "{proxy_info['password']}"
+            username: "{account_info['proxy_user']}",
+            password: "{account_info['proxy_password']}"
         }}
     }};
 }}

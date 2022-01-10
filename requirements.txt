@@ -4,4 +4,5 @@ requests
 pyotp
 discord
 beautifulsoup4
-email
+# email
+joblib
