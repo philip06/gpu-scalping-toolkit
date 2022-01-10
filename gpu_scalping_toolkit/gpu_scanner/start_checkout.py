@@ -8,7 +8,7 @@ from gpu_scalping_toolkit.gpu_checkout_bot.account import ACCOUNT_REGION, Accoun
 
 
 def startCheckout(sku):
-    accounts: list[AccountDTO] = [{
+    accounts: list = [{
         "email": "bbverify88@gmail.com",
         "password": "w9P4mfz7UY6N2S",
         "gmail_password": "w9P4mfz7UY6N2S",
@@ -28,6 +28,17 @@ def startCheckout(sku):
         "proxy_user": "coiaacye",
         "proxy_password": "kkul1ixr4jnp",
         "proxy_host": "23.230.25.104",
+        "proxy_port": 20000
+    },
+        {
+        "email": "kapsakcjvv@gmail.com",
+        "password": "6y8B7^y!C4$7",
+        "gmail_password": "U7d7#xCVL4Qe0!pu",
+        "2fa_token": "O5FK557TKTLZCSOJ",
+        "region": ACCOUNT_REGION.ATL,
+        "proxy_user": "coiaacye",
+        "proxy_password": "kkul1ixr4jnp",
+        "proxy_host": "23.230.25.105",
         "proxy_port": 20000
     }]
 
