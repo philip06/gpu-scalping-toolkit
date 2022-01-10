@@ -35,14 +35,14 @@ def startCheckout(sku):
     m = Manager()
     q = m.Queue()
 
-    # for thread_id, account in enumerate(accounts):
-    #     pool.apply_async(bestbuy_checkout.addProductToCart,
-    #                      args=(q, sku, account, thread_id,))
+    for thread_id, account in enumerate(accounts):
+        pool.apply_async(bestbuy_checkout.addProductToCart,
+                         args=(q, sku, account, thread_id,))
 
-    # pool.close()
-    # pool.join()
+    pool.close()
+    pool.join()
 
-    bestbuy_checkout.addProductToCart(q, sku, accounts[0], 0)
+    # bestbuy_checkout.addProductToCart(q, sku, accounts[0], 0)
 
 
 if __name__ == '__main__':

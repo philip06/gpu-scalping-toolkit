@@ -75,7 +75,7 @@ def restoreQueueTime(driver, backup_queue):
 
 
 def reduceQueueTime(driver, sku, old_queue_end_time, thread_id) -> datetime:
-    backup_cookies, backup_purchaseTracker = saveQueueTime(driver)
+    queue_dto = saveQueueTime(driver)
     clearSoftBan(driver, thread_id)
     new_queue_end_time = old_queue_end_time
 
@@ -94,10 +94,6 @@ def reduceQueueTime(driver, sku, old_queue_end_time, thread_id) -> datetime:
 
     if old_queue_end_time < new_queue_end_time:
         # new queue time sucks, restore old session
-        queue_dto = {
-            "backup_cookies": backup_cookies,
-            "backup_purchaseTracker": backup_purchaseTracker
-        }
         restoreQueueTime(driver, queue_dto)
         logger.info(
             f"BESTBUY{thread_id} - Current queue time: {getRemainingTime(old_queue_end_time)} seconds. Found slower queue time at: {getRemainingTime(new_queue_end_time)}")

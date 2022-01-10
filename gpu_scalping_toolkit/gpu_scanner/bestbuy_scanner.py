@@ -127,7 +127,7 @@ def _scanProductForAvailable(sku, title, soup, proxy_host):
         discord_bot.alertBestbuyDrop(
             sku, "The following product is now available:", title)
         # execute scanner
-        # start_checkout.startCheckout(sku)
+        start_checkout.startCheckout(sku)
         thr = threading.Thread(
             target=start_checkout.startCheckout, args=(sku, ))
         thr.start()
