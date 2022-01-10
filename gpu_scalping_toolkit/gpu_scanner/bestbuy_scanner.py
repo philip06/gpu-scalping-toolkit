@@ -126,11 +126,10 @@ def _scanProductForAvailable(sku, title, soup, proxy_host):
             "Bestbuy: {} - Proxy: {} | Sending alert to discord".format(sku, proxy_host))
         discord_bot.alertBestbuyDrop(
             sku, "The following product is now available:", title)
-        # execute scanner
-        start_checkout.startCheckout(sku)
-        thr = threading.Thread(
-            target=start_checkout.startCheckout, args=(sku, ))
-        thr.start()
+        # execute checkout bot
+        # thr = threading.Thread(
+        #     target=start_checkout.startCheckout, args=(sku, ))
+        # thr.start()
     else:
         bestbuy_scan_logger.info(
             "Bestbuy: {} - Proxy: {} |  Product not available".format(sku, proxy_host))

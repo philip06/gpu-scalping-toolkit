@@ -54,6 +54,7 @@ def addProductToCart(queue: Queue, sku, account_info: AccountDTO, thread_id):
         if queue.qsize() > 0:
             backup_queue = queue.get_nowait()
             bestbuy_queue_cracker.restoreQueueTime(driver, backup_queue)
+            queue.put(backup_queue)
             queue_piggyback = True
             logger.info(
                 f"BESTBUY{thread_id} - Piggybacking on queue from another browser")
