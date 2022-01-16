@@ -15,8 +15,8 @@ A product page scanner designed to send out GPU stock drop notifications to one 
 
 1. [Install python3](https://linuxize.com/post/how-to-install-python-3-8-on-ubuntu-18-04/)
 2. Install pip3: `sudo apt-get -y install python3-pip`
-3. `git clone git@github.com:philip06/gpu-scanner.git && cd gpu-scanner`
-4. `python3 -m pip install -r requirements.txt`
+3. `git clone git@github.com:philip06/gpu-scalping-toolkit.git && cd gpu-scalping-toolkit`
+4. `pip3 install -r requirements.txt`
 
 ## Usage Guide
 
