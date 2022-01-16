@@ -22,7 +22,7 @@ A product page scanner designed to send out GPU stock drop notifications to one 
 
 ##### Checkout Bot
 
-Send bestbuy drop notification for a sku: 
+Run bestbuy checkout bot in parallel for all accounts on a sku: 
  - `python3 gpu_scalping_toolkit.gpu_scanner.start_checkout SKU`
 
 ##### Bestbuy Scanning
