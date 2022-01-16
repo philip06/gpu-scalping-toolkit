@@ -20,14 +20,14 @@ A product page scanner designed to send out GPU stock drop notifications to one 
 
 ## Usage Guide
 
-##### Discord Notification
-
-Currently will send a notification to our [GMU Channel Webhook](https://discordapp.com/api/webhooks/926904611082739733/H1ofplv4PUp_JVXhnao134nFiVBkK9wsWccvySIaF_BRsvJb2TU8a8RMcm4D9UHCjwhz)
+##### Checkout Bot
 
 Send bestbuy drop notification for a sku: 
- - `python3 gpu_scalping_toolkit.gpu_scanner.discord_bot`
+ - `python3 gpu_scalping_toolkit.gpu_scanner.start_checkout SKU`
 
 ##### Bestbuy Scanning
+
+Scanners will send a notification to our [GMU Channel Webhook](https://discordapp.com/api/webhooks/926904611082739733/H1ofplv4PUp_JVXhnao134nFiVBkK9wsWccvySIaF_BRsvJb2TU8a8RMcm4D9UHCjwhz)
 
 Scan bestbuy product page for "High Demand Product" warning or "Add to Cart" button: 
  - `python3 gpu_scalping_toolkit.gpu_scanner.bestbuy_scanner SKU`
