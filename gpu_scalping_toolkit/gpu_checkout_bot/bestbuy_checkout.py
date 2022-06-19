@@ -108,10 +108,10 @@ if __name__ == '__main__':
     import sys
     sku = sys.argv[1]
 
-    BESTBUY_2FA_TOKEN = "4YQJH2QGRIDMXRPD"
-    BESTBUY_EMAIL = "bbverify88@gmail.com"
-    GMAIL_PASSWORD = "w9P4mfz7UY6N2S"
-    BESTBUY_PASSWORD = "w9P4mfz7UY6N2S"
+    BESTBUY_2FA_TOKEN = ""
+    BESTBUY_EMAIL = ""
+    GMAIL_PASSWORD = ""
+    BESTBUY_PASSWORD = ""
 
     account_info = {
         "email": BESTBUY_EMAIL,
@@ -120,10 +120,10 @@ if __name__ == '__main__':
         "2fa_token": BESTBUY_2FA_TOKEN
     }
 
-    PROXY_USER = "coiaacye"
-    PROXY_PASS = "kkul1ixr4jnp"
-    PROXY_HOST = "23.230.25.103"
-    PROXY_PORT = 20000
+    PROXY_USER = ""
+    PROXY_PASS = ""
+    PROXY_HOST = ""
+    PROXY_PORT = 0
 
     proxy_info = {
         "user": PROXY_USER,
